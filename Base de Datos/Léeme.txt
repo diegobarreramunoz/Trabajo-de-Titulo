@@ -1,5 +1,0 @@
-1° El archivo "BDIMEI.txt" debe ser copiado en la en la direccion raiz disco ":C\"
-
-2° El archivo "BDserviciotecnico.sql" debe ser ejecutado en una base de datos previamente creada en SQL SERVER 2005 o superior
-	con el nombre de "BDserviciotecnico" y tener acceso al usuario "sa" y contraseña "weiza8508505", este sistema esta diseñado
-	para funcional en "localhost" aunque desde el codigo fuente pueden ser cambiadas estas preferencias
