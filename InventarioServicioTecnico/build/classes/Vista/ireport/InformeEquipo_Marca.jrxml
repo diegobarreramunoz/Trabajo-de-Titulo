@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HIJO" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="7c592073-2632-41f8-86a4-40016d830e98">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COD_TIENDA" class="java.lang.String"/>
+	<parameter name="FECHA_TERMINO" class="java.lang.String"/>
+	<parameter name="FECHA_INICIO" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT TOP 10
+     COUNT(*) AS CANTIDAD_EQUIPOS,
+     EQ."MARCA" AS MARCA
+FROM
+     "ORDEN_TRABAJO" ORD INNER JOIN "EQUIPO" EQ ON ORD."IMEI" = EQ."IMEI"
+WHERE
+     ORD.COD_TIENDA = $P{COD_TIENDA}
+ AND ORD.FECHA_ING BETWEEN $P{FECHA_INICIO} AND $P{FECHA_TERMINO}
+GROUP BY
+     EQ.MARCA
+ORDER BY
+     COUNT(*) desc]]>
+	</queryString>
+	<field name="CANTIDAD_EQUIPOS" class="java.lang.Integer"/>
+	<field name="MARCA" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="287">
+			<barChart>
+				<chart>
+					<reportElement uuid="8194dc64-4750-41a8-8827-b2e1c1036649" x="0" y="0" width="572" height="287"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[""]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{MARCA}.trim()]]></categoryExpression>
+						<valueExpression><![CDATA[$F{CANTIDAD_EQUIPOS}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot orientation="Horizontal">
+						<seriesColor seriesOrder="0" color="#0099FF"/>
+					</plot>
+					<itemLabel/>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

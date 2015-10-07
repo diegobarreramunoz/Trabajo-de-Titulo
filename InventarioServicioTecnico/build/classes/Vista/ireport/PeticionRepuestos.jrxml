@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="faf5fa72-d7c2-4c9c-ab02-08459d7211e3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="26651700-fd15-4fc1-a452-d739b0c828d5"/>
+	<parameter name="cod_tienda" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaini" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaterm" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="estado1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="estado2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="estado3" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     ORDEN_TRABAJO."NUM_ORDEN" AS ORDEN_TRABAJO_NUM_ORDEN,
+     ORDEN_TRABAJO."FECHA_ING" AS ORDEN_TRABAJO_FECHA_ING,
+     ORDEN_TRABAJO."FECHA_ENT" AS ORDEN_TRABAJO_FECHA_ENT,
+     ORDEN_TRABAJO."REPUESTOS" AS ORDEN_TRABAJO_REPUESTOS,
+     TIENDA."DIRECCION" AS TIENDA_DIRECCION,
+     TIENDA."TELEFONO" AS TIENDA_TELEFONO,
+     TIENDA."NOMBRE" AS TIENDA_NOMBRE,
+     EQUIPO."MARCA" AS EQUIPO_MARCA,
+     EQUIPO."MODELO" AS EQUIPO_MODELO,
+     ORDEN_TRABAJO."IMEI" AS ORDEN_TRABAJO_IMEI,
+     ORDEN_TRABAJO."COD_TIENDA" AS ORDEN_TRABAJO_COD_TIENDA
+FROM
+     "dbo"."TIENDA" TIENDA INNER JOIN "dbo"."ORDEN_TRABAJO" ORDEN_TRABAJO ON TIENDA."COD_TIENDA" = ORDEN_TRABAJO."COD_TIENDA"
+     INNER JOIN "dbo"."EQUIPO" EQUIPO ON ORDEN_TRABAJO."IMEI" = EQUIPO."IMEI"
+WHERE
+     ORDEN_TRABAJO."FECHA_ING" BETWEEN $P{fechaini} AND $P{fechaterm}
+ AND ORDEN_TRABAJO."COD_TIENDA" = $P{cod_tienda}
+ AND ORDEN_TRABAJO."ESTADO_REPUE" = 'No Existe'
+ AND (ORDEN_TRABAJO."ESTADO" = $P{estado1} or ORDEN_TRABAJO."ESTADO" = $P{estado2} or ORDEN_TRABAJO."ESTADO" = $P{estado3})
+ORDER BY
+     ORDEN_TRABAJO."FECHA_ENT"]]>
+	</queryString>
+	<field name="ORDEN_TRABAJO_NUM_ORDEN" class="java.lang.Integer"/>
+	<field name="ORDEN_TRABAJO_FECHA_ING" class="java.sql.Timestamp"/>
+	<field name="ORDEN_TRABAJO_FECHA_ENT" class="java.sql.Timestamp"/>
+	<field name="ORDEN_TRABAJO_REPUESTOS" class="java.lang.String"/>
+	<field name="TIENDA_DIRECCION" class="java.lang.String"/>
+	<field name="TIENDA_TELEFONO" class="java.lang.Long"/>
+	<field name="TIENDA_NOMBRE" class="java.lang.String"/>
+	<field name="EQUIPO_MARCA" class="java.lang.String"/>
+	<field name="EQUIPO_MODELO" class="java.lang.String"/>
+	<field name="ORDEN_TRABAJO_IMEI" class="java.lang.String"/>
+	<field name="ORDEN_TRABAJO_COD_TIENDA" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<image>
+				<reportElement uuid="2d662db6-57b3-4bc1-bd22-722755b9b7b7" x="0" y="0" width="141" height="85"/>
+				<imageExpression><![CDATA["C:\\Users\\Diego\\Pictures\\logo_servicio_tecnico.JPG.jpeg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="bd7531ad-4a03-441d-83ca-d40e5acddfe4" x="141" y="0" width="329" height="85"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[PETICION REPUESTOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="73" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="0ceb2fd8-ce1b-4b25-9810-7717ca87268d" x="0" y="0" width="121" height="35"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[NOMBRE SUCURSAL: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0ceb2fd8-ce1b-4b25-9810-7717ca87268d" x="0" y="35" width="121" height="35"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[DIRECCION SUCURSAL: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0ceb2fd8-ce1b-4b25-9810-7717ca87268d" x="345" y="0" width="125" height="35"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[TELEFONO SUCURSAL: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="5aea9ff0-2d68-479b-80d0-de8458b0d3fd" x="121" y="0" width="224" height="35"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TIENDA_NOMBRE}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c98fea69-8f84-4f5c-a100-7f76cf44a60e" x="470" y="0" width="102" height="35"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TIENDA_TELEFONO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="351bb2db-b51f-466f-a21d-e8bcf2b0e099" x="121" y="35" width="451" height="35"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TIENDA_DIRECCION}.trim()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="33">
+			<staticText>
+				<reportElement uuid="c8000880-884d-42d3-909e-54c3b4db3bb9" x="0" y="2" width="103" height="30"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NUM ORDEN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7988edb1-f3d7-4600-bc6f-d99d65c917b0" x="103" y="2" width="60" height="30"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[FECHA ENTREGA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a1f4cf39-fa05-4148-a8c0-5b71c448f5a6" x="163" y="2" width="78" height="30"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[EQUIPO MARCA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c721f5dd-7f6f-48a4-9e80-025c703b3be8" x="241" y="2" width="100" height="30"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[EQUIPO MODELO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1e9b80eb-0068-443d-9dd6-19c98a014678" x="341" y="2" width="231" height="30"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[REPUESTOS]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="c5056fb7-cc1b-4153-adb3-7f1026c735c5" x="0" y="32" width="571" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1c9b8e66-bbe8-4b4e-9ea7-2fea6e7f5b36" x="104" y="2" width="60" height="31"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ORDEN_TRABAJO_FECHA_ENT}.toString().substring( 0, 10 )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8a5ca231-9f95-439e-ad59-c6f57495d98a" x="164" y="1" width="77" height="30"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{EQUIPO_MARCA}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8d26e482-9997-41c4-82de-4fc48569d0b0" x="241" y="1" width="100" height="30"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{EQUIPO_MODELO}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8fb0acc8-43d8-4cad-82db-7394b1f31a37" x="341" y="0" width="231" height="31"/>
+				<textElement textAlignment="Center">
+					<font isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ORDEN_TRABAJO_REPUESTOS}.trim()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="4ac1eeb9-c2e6-4fb7-8cb9-4bdfca90e003" x="163" y="2" width="1" height="32"/>
+			</line>
+			<line>
+				<reportElement uuid="64c287eb-8a0d-43aa-b3e7-1cb005927ae9" x="241" y="1" width="1" height="31"/>
+			</line>
+			<line>
+				<reportElement uuid="360dbeb4-e7ae-4da1-9f02-a171aeee321a" x="341" y="1" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="359ab6c1-a25c-4010-8a5b-30683821c150" x="572" y="1" width="1" height="31"/>
+			</line>
+			<line>
+				<reportElement uuid="44d9d811-a560-45df-9a89-c82f1fd2ecc1" x="0" y="33" width="571" height="1"/>
+			</line>
+			<componentElement>
+				<reportElement uuid="7883b1fc-0f29-4a21-b63b-6da91786b49f" x="0" y="2" width="103" height="30"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="true" checksumRequired="false" barWidth="2" barHeight="0">
+					<jr:codeExpression><![CDATA[$F{ORDEN_TRABAJO_IMEI}.substring( 0, 3 )+"-"+$F{EQUIPO_MARCA}.substring( 0, 1 )+"-"+$F{ORDEN_TRABAJO_NUM_ORDEN}.toString()]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement uuid="9b9c04da-6620-4735-a657-e50dbeec1df2" x="541" y="10" width="28" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="bf539054-b094-4e7c-b3ee-2da0218661f6" x="501" y="10" width="40" height="20"/>
+				<textElement/>
+				<text><![CDATA[Pagina: ]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

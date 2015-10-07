@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InformePersonal" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="87ee3f52-0b0b-46d5-8fec-61e0e4a67223">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="miestilo">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[!$F{REPUESTO_ESTADO}]]></conditionExpression>
+			<style forecolor="#FF0000" backcolor="#FFFFFF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ESTADO1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ESTADO2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ESTADO3" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ESTADO4" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHAINI1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHAINI2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHAFIN1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHAFIN2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA" class="java.lang.String"/>
+	<parameter name="MI_COD_TIENDA" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COD_TIENDA" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPUESTO_ESTADO_1" class="java.lang.Boolean"/>
+	<parameter name="REPUESTO_ESTADO_2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     REPUESTO."REPUESTO" AS REPUESTO_REPUESTO,
+     REPUESTO."ESTADO" AS REPUESTO_ESTADO,
+     (SELECT NOMBRE FROM TIENDA WHERE COD_TIENDA = $P{MI_COD_TIENDA}) AS MITIENDA_NOMBRE,
+     (SELECT DIRECCION FROM TIENDA WHERE COD_TIENDA = $P{MI_COD_TIENDA}) AS MITIENDA_DIRECCION,
+     (SELECT TELEFONO FROM TIENDA WHERE COD_TIENDA = $P{MI_COD_TIENDA}) AS MITIENDA_TELEFONO,
+     TIENDA."NOMBRE" AS TIENDA_NOMBRE,
+     ORDEN_TRABAJO."NUM_ORDEN" AS ORDEN_TRABAJO_NUM_ORDEN,
+     ORDEN_TRABAJO."FECHA_ING" AS ORDEN_TRABAJO_FECHA_ING,
+     ORDEN_TRABAJO."FECHA_ENT" AS ORDEN_TRABAJO_FECHA_ENT,
+     EQUIPO."IMEI" AS EQUIPO_IMEI,
+     EQUIPO."MARCA" AS EQUIPO_MARCA,
+     EQUIPO."MODELO" AS EQUIPO_MODELO
+FROM 	REPUESTO INNER JOIN ORDEN_TRABAJO ON REPUESTO.NUM_ORDEN = ORDEN_TRABAJO.NUM_ORDEN
+	INNER JOIN TIENDA ON ORDEN_TRABAJO.COD_TIENDA = TIENDA.COD_TIENDA
+	INNER JOIN EQUIPO ON ORDEN_TRABAJO.IMEI = EQUIPO.IMEI
+
+
+WHERE		TIENDA.COD_TIENDA LIKE $P{COD_TIENDA}+'%' AND
+		(ORDEN_TRABAJO.ESTADO=$P{ESTADO1} OR
+		ORDEN_TRABAJO.ESTADO=$P{ESTADO2} OR
+		ORDEN_TRABAJO.ESTADO=$P{ESTADO3} OR
+		ORDEN_TRABAJO.ESTADO=$P{ESTADO4}) AND
+		((ORDEN_TRABAJO.FECHA_ING BETWEEN $P{FECHAINI1} AND $P{FECHAFIN1}) OR
+		(ORDEN_TRABAJO.FECHA_ENT BETWEEN $P{FECHAINI2} AND $P{FECHAFIN2})) AND
+		(REPUESTO.ESTADO = $P{REPUESTO_ESTADO_1} OR REPUESTO.ESTADO = $P{REPUESTO_ESTADO_2})
+ORDER BY  ORDEN_TRABAJO.NUM_ORDEN]]>
+	</queryString>
+	<field name="REPUESTO_REPUESTO" class="java.lang.String"/>
+	<field name="REPUESTO_ESTADO" class="java.lang.Boolean"/>
+	<field name="MITIENDA_NOMBRE" class="java.lang.String"/>
+	<field name="MITIENDA_DIRECCION" class="java.lang.String"/>
+	<field name="MITIENDA_TELEFONO" class="java.lang.Long"/>
+	<field name="TIENDA_NOMBRE" class="java.lang.String"/>
+	<field name="ORDEN_TRABAJO_NUM_ORDEN" class="java.lang.Long"/>
+	<field name="ORDEN_TRABAJO_FECHA_ING" class="java.sql.Timestamp"/>
+	<field name="ORDEN_TRABAJO_FECHA_ENT" class="java.sql.Timestamp"/>
+	<field name="EQUIPO_IMEI" class="java.lang.String"/>
+	<field name="EQUIPO_MARCA" class="java.lang.String"/>
+	<field name="EQUIPO_MODELO" class="java.lang.String"/>
+	<variable name="REPUESTO_REPUESTO_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{REPUESTO_REPUESTO}]]></variableExpression>
+	</variable>
+	<variable name="ORDEN_TRABAJO_NUM_ORDEN_1" class="java.lang.Integer" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{ORDEN_TRABAJO_NUM_ORDEN}]]></variableExpression>
+	</variable>
+	<group name="COD_ORDEN">
+		<groupExpression><![CDATA[$F{ORDEN_TRABAJO_NUM_ORDEN}]]></groupExpression>
+		<groupHeader>
+			<band height="83">
+				<staticText>
+					<reportElement uuid="924e647b-2679-476f-81b4-e3c1643f2370" x="0" y="0" width="141" height="20"/>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cod Orden]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="d36d8067-1242-4cf7-acc8-2f49d2a43f27" x="0" y="0" width="572" height="1"/>
+				</line>
+				<componentElement>
+					<reportElement uuid="f2b5dc54-8ae3-4807-ab81-069d5245b028" x="0" y="20" width="141" height="32"/>
+					<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="true" checksumRequired="false">
+						<jr:codeExpression><![CDATA[$F{EQUIPO_IMEI}.substring( 0, 3 )+"-"+$F{EQUIPO_MARCA}.substring( 0, 1 )+"-"+$F{ORDEN_TRABAJO_NUM_ORDEN}.toString()]]></jr:codeExpression>
+					</jr:barbecue>
+				</componentElement>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="901d93e3-6205-4e97-9450-90fe2bb2fe90" x="100" y="52" width="80" height="15"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$F{ORDEN_TRABAJO_FECHA_ING}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="633e32b6-599c-47ad-8011-c0152ccd0ed3" x="100" y="67" width="80" height="15"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{ORDEN_TRABAJO_FECHA_ENT}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="428891c2-d86f-438a-b261-63fc36490e7d" x="0" y="52" width="100" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<text><![CDATA[FECHA INGRESO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="323f74c0-90a3-4920-9097-7c2b2cd76073" x="0" y="67" width="100" height="15"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[FECHA ENTREGA:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement uuid="4515c3b9-2275-462f-a63a-cc5ad12d651f" x="211" y="21" width="361" height="31"/>
+					<textElement textAlignment="Left" verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA[$F{EQUIPO_MODELO}.trim()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="5698a33d-426a-4cc9-8a12-cf4c66e48c12" x="141" y="21" width="70" height="31"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[MODELO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="af2530ed-7eee-4107-8d06-0f2b331a781a" x="141" y="1" width="70" height="20"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[FABRICANTE:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="aa862f2f-1b56-4ef4-ad0d-75a763f9cb81" x="211" y="1" width="361" height="19"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{EQUIPO_MARCA}.trim()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="f7ae055c-f56b-4ceb-9031-424b5a6e7917" mode="Transparent" x="239" y="52" width="152" height="15" forecolor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[SUCURSAL DE ORDEN:]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="fdffe6ef-e6fc-4199-b59f-b61eea650c26" x="400" y="52" width="172" height="15"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{TIENDA_NOMBRE}.trim()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="f7ae055c-f56b-4ceb-9031-424b5a6e7917" mode="Transparent" x="239" y="67" width="265" height="15" forecolor="#FF0000"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[REPUESTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="f7ae055c-f56b-4ceb-9031-424b5a6e7917" mode="Transparent" x="504" y="67" width="68" height="15" forecolor="#FF0000"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[DISPONIBLE]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="220" splitType="Stretch">
+			<image>
+				<reportElement uuid="2d662db6-57b3-4bc1-bd22-722755b9b7b7" x="0" y="0" width="141" height="79"/>
+				<imageExpression><![CDATA["C:\\Users\\Diego\\Pictures\\logo_servicio_tecnico.JPG.jpeg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="bd7531ad-4a03-441d-83ca-d40e5acddfe4" x="131" y="0" width="294" height="79"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[INFORME REPUESTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0ceb2fd8-ce1b-4b25-9810-7717ca87268d" x="0" y="79" width="121" height="21"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[NOMBRE SUCURSAL: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="5aea9ff0-2d68-479b-80d0-de8458b0d3fd" x="121" y="79" width="294" height="21"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{MITIENDA_NOMBRE}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="351bb2db-b51f-466f-a21d-e8bcf2b0e099" x="121" y="100" width="294" height="24"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{MITIENDA_DIRECCION}.trim()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0ceb2fd8-ce1b-4b25-9810-7717ca87268d" x="0" y="100" width="121" height="24"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[DIRECCION SUCURSAL: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="df2ce037-9ff9-498d-ad88-ae3e725ab474" x="0" y="149" width="261" height="20"/>
+				<textElement/>
+				<text><![CDATA[Fechas Consideradas para este Informe:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="77c6991e-461f-418e-9b1c-bbbc6d06ce91" x="332" y="149" width="13" height="20"/>
+				<textElement/>
+				<text><![CDATA[Al]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="036f8ec0-3074-4641-97f3-41334bfe5884" x="345" y="149" width="70" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{FECHAFIN1} != null || $P{FECHAFIN1} != ""? $P{FECHAFIN1} : "") + ($P{FECHAFIN2} != null || $P{FECHAFIN2} != "" ? $P{FECHAFIN2} : "")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e3d29094-3bdb-4ea4-b5a1-0181d995e82e" x="261" y="149" width="71" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{FECHAINI1} != null || $P{FECHAINI1} != "" ? $P{FECHAINI1} : "") + ($P{FECHAINI2} != null || $P{FECHAINI2} != "" ? $P{FECHAINI2} : "")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2157e2e4-0a22-4438-b4aa-492c9b09c546" x="425" y="79" width="147" height="30"/>
+				<textElement/>
+				<text><![CDATA[Estados de Orden Considerados en este informe]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="25baffec-895c-4865-8d38-55c04cb23000" x="425" y="109" width="147" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ESTADO1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8fdf212e-dee9-4c26-8357-3d6b51d5bc55" x="425" y="129" width="147" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ESTADO2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a092a83d-03b9-47b5-95c7-e2805f6fb11e" x="425" y="149" width="147" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ESTADO3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2277b268-eadd-425e-b4e3-50868cba085d" x="425" y="169" width="147" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ESTADO4}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e7d3cfb5-2808-48e2-aea1-555e0fe7c392" x="180" y="169" width="81" height="20"/>
+				<textElement/>
+				<text><![CDATA[Tipo de Fecha:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="942d472d-ff05-453e-8043-e27587155aa0" x="261" y="169" width="154" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FECHA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c98fea69-8f84-4f5c-a100-7f76cf44a60e" x="121" y="124" width="294" height="21"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{MITIENDA_TELEFONO}.toString()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0ceb2fd8-ce1b-4b25-9810-7717ca87268d" x="0" y="124" width="121" height="21"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[TELEFONO SUCURSAL: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bb6e33db-72a2-4276-af50-e19c339b64b9" x="0" y="189" width="79" height="29"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[CANTIDAD DE ORDENES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b843f264-b999-4ee4-a2da-941d6ba39472" x="124" y="189" width="79" height="29"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[CANTIDAD DE REPUESTOS]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement uuid="43448c6e-6d6b-4e6f-b3ad-cf7a2eae3d32" x="203" y="189" width="58" height="29"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPUESTO_REPUESTO_1}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="13aa10dc-907d-4075-8519-028ddc0f1f5c" x="80" y="189" width="44" height="29"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{ORDEN_TRABAJO_NUM_ORDEN_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement uuid="7465568d-c5b9-4be6-882e-22add08d4d4c" x="32" y="-1" width="540" height="2" forecolor="#999999"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="2a08cfb3-6bf0-452b-a0e6-a529d9a8625b" style="miestilo" x="32" y="1" width="472" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{REPUESTO_REPUESTO}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="43e07ca9-7d34-4186-a887-f377d63ab7f8" style="miestilo" x="504" y="1" width="68" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[($F{REPUESTO_ESTADO}? "SI" : "NO")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="63e20009-b44c-432b-bc7e-c641c2816197" x="493" y="10" width="40" height="20"/>
+				<textElement/>
+				<text><![CDATA[Pagina: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="cb5c9a67-6678-4940-a287-b240bbc3181e" x="533" y="10" width="32" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="17156eb7-f5fb-4a31-9c04-7c0d2b8c92cd" x="0" y="10" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

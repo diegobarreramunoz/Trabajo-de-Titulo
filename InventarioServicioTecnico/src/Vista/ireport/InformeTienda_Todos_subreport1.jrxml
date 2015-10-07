@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InformeTienda_Todos_subreport1" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="97601ce9-2099-4ff6-925a-6923ae188e4b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FECHA_INI1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA_INI2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT		T.NOMBRE AS NOMBRE_TIENDA,
+		SUM(O.ABONO) AS TOTAL_ABONO,
+		DATENAME(MONTH,O.FECHA_ING) AS MES,
+		YEAR(O.FECHA_ING) AS AÑO
+FROM ORDEN_TRABAJO O INNER JOIN TIENDA T ON O.COD_TIENDA = T.COD_TIENDA
+WHERE ((DATEDIFF(Mm,O.FECHA_ING, $P{FECHA_INI1})<=10 AND DATEDIFF(Mm,O.FECHA_ING, $P{FECHA_INI1})>=0) OR
+	(DATEDIFF(Mm,O.FECHA_ING, $P{FECHA_INI2})<=10 AND DATEDIFF(Mm,O.FECHA_ING, $P{FECHA_INI2})>=0))
+GROUP BY T.COD_TIENDA,  T.NOMBRE, MONTH(O.FECHA_ING), DATENAME(MONTH,O.FECHA_ING),YEAR(O.FECHA_ING)
+ORDER BY T.COD_TIENDA, YEAR(O.FECHA_ING), MONTH(O.FECHA_ING), DATENAME(MONTH,O.FECHA_ING)]]>
+	</queryString>
+	<field name="NOMBRE_TIENDA" class="java.lang.String"/>
+	<field name="TOTAL_ABONO" class="java.lang.Integer"/>
+	<field name="MES" class="java.lang.String"/>
+	<field name="AÑO" class="java.lang.Integer"/>
+	<group name="NOMBRE_TIENDA">
+		<groupExpression><![CDATA[$F{NOMBRE_TIENDA}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField>
+					<reportElement uuid="423c0bed-995d-4725-a876-8db4870a41e4" x="0" y="0" width="347" height="20"/>
+					<textElement>
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NOMBRE_TIENDA}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="ab8f8bb1-f937-4c80-a70b-d8f3538cd7ee" x="0" y="20" width="100" height="20" forecolor="#666666"/>
+					<textElement textAlignment="Center">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[AÑO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="9cc5133d-8278-4262-8ada-a26e4a4765d0" x="100" y="20" width="100" height="20" forecolor="#666666"/>
+					<textElement textAlignment="Center">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[MES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="510120f5-daa5-4053-82f2-036e000d44af" x="200" y="20" width="147" height="20" forecolor="#666666"/>
+					<textElement textAlignment="Center">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL POR MES (ABONO)]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="b7952307-37ec-4a29-afa1-3af8ddc24ae8" x="0" y="0" width="347" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="263">
+			<barChart>
+				<chart isShowLegend="true" evaluationTime="Report" theme="default">
+					<reportElement uuid="033da00d-d759-48ad-976c-248f75736948" x="0" y="0" width="572" height="263"/>
+					<chartTitle position="Top"/>
+					<chartSubtitle/>
+					<chartLegend position="Bottom"/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{NOMBRE_TIENDA}.trim()]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{MES}+"/"+$F{AÑO}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{TOTAL_ABONO}]]></valueExpression>
+						<labelExpression><![CDATA[$F{TOTAL_ABONO}+"-"]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowTickLabels="true" isShowTickMarks="true">
+					<plot backgroundAlpha="1.0" foregroundAlpha="1.0" labelRotation="-70.0">
+						<seriesColor seriesOrder="0" color="#00CC00"/>
+						<seriesColor seriesOrder="1" color="#0000FF"/>
+						<seriesColor seriesOrder="2" color="#00FFCC"/>
+						<seriesColor seriesOrder="3" color="#FF6600"/>
+						<seriesColor seriesOrder="4" color="#A0B54A"/>
+						<seriesColor seriesOrder="5" color="#4D193F"/>
+						<seriesColor seriesOrder="6" color="#14E498"/>
+						<seriesColor seriesOrder="7" color="#E18A6F"/>
+						<seriesColor seriesOrder="8" color="#C8963A"/>
+						<seriesColor seriesOrder="9" color="#D87D55"/>
+						<seriesColor seriesOrder="10" color="#EFD467"/>
+						<seriesColor seriesOrder="11" color="#364798"/>
+						<seriesColor seriesOrder="12" color="#C8BC1E"/>
+						<seriesColor seriesOrder="13" color="#DD8707"/>
+						<seriesColor seriesOrder="14" color="#C5C8CE"/>
+						<seriesColor seriesOrder="15" color="#A490D2"/>
+						<seriesColor seriesOrder="16" color="#44F138"/>
+					</plot>
+					<itemLabel/>
+				</barPlot>
+			</barChart>
+		</band>
+	</title>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement uuid="43188348-ae33-4c8b-939b-dc17ed94cc0c" x="0" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{AÑO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4dae8f6f-e523-4aea-93b0-b3094542d6fd" x="100" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{MES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8bc71a5e-48bb-43f9-b83c-d775885b4a52" x="200" y="0" width="147" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{TOTAL_ABONO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
